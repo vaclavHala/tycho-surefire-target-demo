@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>tycho-surefire-target</groupId>
+    <artifactId>my.tests</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <tycho-version>2.7.4</tycho-version>
+    </properties>
+
+    <modules>
+        <module>my.test.a</module>
+       <!-- <module>my.test.b</module> -->
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-maven-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <resolver>p2</resolver>
+                    <target>
+                        <artifact>
+                            <groupId>tycho-surefire-target</groupId> 
+                            <artifactId>my.target</artifactId> 
+                            <version>1.0.0</version>
+                        </artifact>
+                    </target>
+                    <dependency-resolution>
+                        <extraRequirements>
+                            <requirement>
+                                <type>eclipse-plugin</type>
+                                <id>my.listener</id>
+                                <versionRange>1.0.0</versionRange>
+                            </requirement>
+                        </extraRequirements>
+                    </dependency-resolution>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-surefire-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <providerProperties>
+                        <property>
+                            <name>listener</name>
+                            <value>my.listener.Listener</value>
+                        </property>
+                    </providerProperties>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
